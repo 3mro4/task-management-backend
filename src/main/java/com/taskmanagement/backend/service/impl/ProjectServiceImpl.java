@@ -6,6 +6,7 @@ import com.taskmanagement.backend.dto.ProjectDto;
 import com.taskmanagement.backend.entity.Project;
 import com.taskmanagement.backend.exception.ResourceNotFoundException;
 import com.taskmanagement.backend.repository.ProjectRepository;
+import com.taskmanagement.backend.service.ProjectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,10 +16,11 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class ProjectServiceImpl {
+public class ProjectServiceImpl implements ProjectService {
 
     private final ProjectRepository projectRepository;
 
+    @Override
     public ProjectDto create(CreateProjectRequest request) {
         Project project = Project.builder()
                 .name(request.getName())
@@ -29,6 +31,7 @@ public class ProjectServiceImpl {
         return mapToDto(savedProject);
     }
 
+    @Override
     public List<ProjectDto> getAll() {
         return projectRepository.findAll()
                 .stream()
@@ -36,6 +39,7 @@ public class ProjectServiceImpl {
                 .toList();
     }
 
+    @Override
     public ProjectDetailsDto getById(UUID id) {
         Project project = projectRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Project not found with id: " + id));

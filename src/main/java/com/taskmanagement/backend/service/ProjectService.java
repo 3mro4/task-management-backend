@@ -9,9 +9,9 @@ import java.util.UUID;
 
 public interface ProjectService {
 
-    ProjectDto createProject(CreateProjectRequest request);
+    ProjectDto create(CreateProjectRequest request);
 
-    List<ProjectDto> getAllProjects();
+    List<ProjectDto> getAll();
 
-    ProjectDetailsDto getProjectById(UUID id);
+    ProjectDetailsDto getById(UUID id);
 }
