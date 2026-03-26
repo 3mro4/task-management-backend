@@ -9,7 +9,6 @@ import com.taskmanagement.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import tools.jackson.databind.ObjectMapper;
 
 import java.util.List;
 import java.util.UUID;
@@ -20,20 +19,8 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final ObjectMapper objectMapper;
 
     //map, userDetailsServiceimp in security , interface to all service impl , requestmapping
-
-//    @Override
-//    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-//        User user = userRepository.findByEmail(email)
-//                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + email));
-//        return new org.springframework.security.core.userdetails.User(
-//                user.getEmail(),
-//                user.getPassword(),
-//                new ArrayList<>()
-//        );
-//    }
 
     public List<UserDto> getAllUsers() {
         return userRepository.findAll()

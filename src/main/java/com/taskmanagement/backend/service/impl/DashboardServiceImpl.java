@@ -5,6 +5,7 @@ import com.taskmanagement.backend.entity.Status;
 import com.taskmanagement.backend.repository.TaskRepository;
 import com.taskmanagement.backend.repository.UserRepository;
 import com.taskmanagement.backend.repository.ProjectRepository;
+import com.taskmanagement.backend.service.DashboardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +14,7 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class DashboardService {
+public class DashboardServiceImpl implements DashboardService {
 
     private final TaskRepository taskRepository;
     private final UserRepository userRepository;
