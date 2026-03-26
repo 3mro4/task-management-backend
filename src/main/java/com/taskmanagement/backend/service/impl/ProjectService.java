@@ -1,4 +1,4 @@
-package com.taskmanagement.backend.service;
+package com.taskmanagement.backend.service.impl;
 
 import com.taskmanagement.backend.dto.CreateProjectRequest;
 import com.taskmanagement.backend.dto.ProjectDetailsDto;

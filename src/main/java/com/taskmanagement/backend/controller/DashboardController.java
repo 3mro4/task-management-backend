@@ -1,6 +1,6 @@
 package com.taskmanagement.backend.controller;
 
-import com.taskmanagement.backend.service.DashboardService;
+import com.taskmanagement.backend.service.impl.DashboardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

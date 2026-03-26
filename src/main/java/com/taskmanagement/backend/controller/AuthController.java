@@ -3,7 +3,7 @@ package com.taskmanagement.backend.controller;
 import com.taskmanagement.backend.dto.auth.AuthResponse;
 import com.taskmanagement.backend.dto.auth.LoginRequest;
 import com.taskmanagement.backend.dto.auth.RegisterRequest;
-import com.taskmanagement.backend.service.AuthService;
+import com.taskmanagement.backend.service.impl.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
