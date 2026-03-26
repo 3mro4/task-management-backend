@@ -15,7 +15,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class ProjectService {
+public class ProjectServiceImpl {
 
     private final ProjectRepository projectRepository;
 

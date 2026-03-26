@@ -3,7 +3,7 @@ package com.taskmanagement.backend.controller;
 import com.taskmanagement.backend.dto.CreateProjectRequest;
 import com.taskmanagement.backend.dto.ProjectDetailsDto;
 import com.taskmanagement.backend.dto.ProjectDto;
-import com.taskmanagement.backend.service.impl.ProjectService;
+import com.taskmanagement.backend.service.impl.ProjectServiceImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,7 +19,7 @@ import java.util.UUID;
 @CrossOrigin(origins = "http://localhost:4200")
 public class ProjectController {
 
-    private final ProjectService projectService;
+    private final ProjectServiceImpl projectService;
 
     @PostMapping
     public ResponseEntity<ProjectDto> createProject(@Valid @RequestBody CreateProjectRequest request) {
