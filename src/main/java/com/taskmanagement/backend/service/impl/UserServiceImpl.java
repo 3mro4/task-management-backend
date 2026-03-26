@@ -7,6 +7,7 @@ import com.taskmanagement.backend.exception.ResourceNotFoundException;
 import com.taskmanagement.backend.repository.UserRepository;
 import com.taskmanagement.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,22 +20,24 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final ModelMapper modelMapper;
 
-    //map, userDetailsServiceimp in security , interface to all service impl , requestmapping
-
+    @Override
     public List<UserDto> getAllUsers() {
         return userRepository.findAll()
                 .stream()
-                .map(this::mapToDto)
+                .map(user -> modelMapper.map(user, UserDto.class))
                 .toList();
     }
 
+    @Override
     public UserDto getUserById(UUID id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
-        return mapToDto(user);
+        return modelMapper.map(user, UserDto.class);
     }
 
+    @Override
     public UserDto createUser(RegisterRequest request) {
         if (userRepository.existsByEmail(request.getEmail())) {
             throw new RuntimeException("Email already in use: " + request.getEmail());
@@ -46,33 +49,24 @@ public class UserServiceImpl implements UserService {
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .build();
-        return mapToDto(userRepository.save(user));
+        return modelMapper.map(userRepository.save(user), UserDto.class);
     }
 
-    public UserDto updateUser(UUID id, com.taskmanagement.backend.dto.auth.RegisterRequest request) {
+    @Override
+    public UserDto updateUser(UUID id, RegisterRequest request) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
         user.setFirstName(request.getFirstName());
         user.setMiddleName(request.getMiddleName());
         user.setLastName(request.getLastName());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        return mapToDto(userRepository.save(user));
+        return modelMapper.map(userRepository.save(user), UserDto.class);
     }
 
+    @Override
     public void deleteUser(UUID id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
         userRepository.delete(user);
-    }
-
-    private UserDto mapToDto(User user) {
-        return UserDto.builder()
-                .id(user.getId())
-                .firstName(user.getFirstName())
-                .middleName(user.getMiddleName())
-                .lastName(user.getLastName())
-                .email(user.getEmail())
-                .createdAt(user.getCreatedAt())
-                .build();
     }
 }

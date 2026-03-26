@@ -8,6 +8,7 @@ import com.taskmanagement.backend.exception.ResourceNotFoundException;
 import com.taskmanagement.backend.repository.ProjectRepository;
 import com.taskmanagement.backend.service.ProjectService;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -19,6 +20,7 @@ import java.util.UUID;
 public class ProjectServiceImpl implements ProjectService {
 
     private final ProjectRepository projectRepository;
+    private final ModelMapper modelMapper;
 
     @Override
     public ProjectDto create(CreateProjectRequest request) {
@@ -26,16 +28,14 @@ public class ProjectServiceImpl implements ProjectService {
                 .name(request.getName())
                 .description(request.getDescription())
                 .build();
-
-        Project savedProject = projectRepository.save(project);
-        return mapToDto(savedProject);
+        return modelMapper.map(projectRepository.save(project), ProjectDto.class);
     }
 
     @Override
     public List<ProjectDto> getAll() {
         return projectRepository.findAll()
                 .stream()
-                .map(this::mapToDto)
+                .map(project -> modelMapper.map(project, ProjectDto.class))
                 .toList();
     }
 
@@ -43,7 +43,6 @@ public class ProjectServiceImpl implements ProjectService {
     public ProjectDetailsDto getById(UUID id) {
         Project project = projectRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Project not found with id: " + id));
-
         return ProjectDetailsDto.builder()
                 .id(project.getId())
                 .name(project.getName())
@@ -51,15 +50,6 @@ public class ProjectServiceImpl implements ProjectService {
                 .createdAt(project.getCreatedAt())
                 .currentMembers(List.of())
                 .tasksByPriority(new HashMap<>())
-                .build();
-    }
-
-    private ProjectDto mapToDto(Project project) {
-        return ProjectDto.builder()
-                .id(project.getId())
-                .name(project.getName())
-                .description(project.getDescription())
-                .createdAt(project.getCreatedAt())
                 .build();
     }
 }

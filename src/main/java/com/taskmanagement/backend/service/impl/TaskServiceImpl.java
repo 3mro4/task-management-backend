@@ -12,6 +12,7 @@ import com.taskmanagement.backend.repository.TaskRepository;
 import com.taskmanagement.backend.repository.UserRepository;
 import com.taskmanagement.backend.service.TaskService;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,6 +25,7 @@ public class TaskServiceImpl implements TaskService {
     private final TaskRepository taskRepository;
     private final ProjectRepository projectRepository;
     private final UserRepository userRepository;
+    private final ModelMapper modelMapper;
 
     @Override
     public List<TaskDto> getAll() {
@@ -37,7 +39,6 @@ public class TaskServiceImpl implements TaskService {
     public TaskDto getById(UUID id) {
         Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Task not found with id: " + id));
-
         return mapToDto(task);
     }
 
@@ -45,10 +46,8 @@ public class TaskServiceImpl implements TaskService {
     public TaskDto create(CreateTaskRequest request) {
         Project project = projectRepository.findById(request.getProjectId())
                 .orElseThrow(() -> new ResourceNotFoundException("Project not found with id: " + request.getProjectId()));
-
         User assignee = userRepository.findById(request.getAssigneeId())
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + request.getAssigneeId()));
-
         Task task = Task.builder()
                 .title(request.getTitle())
                 .description(request.getDescription())
@@ -58,22 +57,17 @@ public class TaskServiceImpl implements TaskService {
                 .project(project)
                 .assignee(assignee)
                 .build();
-
-        Task savedTask = taskRepository.save(task);
-        return mapToDto(savedTask);
+        return mapToDto(taskRepository.save(task));
     }
 
     @Override
     public TaskDto update(UUID id, UpdateTaskRequest request) {
         Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Task not found with id: " + id));
-
         Project project = projectRepository.findById(request.getProjectId())
                 .orElseThrow(() -> new ResourceNotFoundException("Project not found with id: " + request.getProjectId()));
-
         User assignee = userRepository.findById(request.getAssigneeId())
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + request.getAssigneeId()));
-
         task.setTitle(request.getTitle());
         task.setDescription(request.getDescription());
         task.setPriority(request.getPriority());
@@ -81,32 +75,22 @@ public class TaskServiceImpl implements TaskService {
         task.setDueDate(request.getDueDate());
         task.setProject(project);
         task.setAssignee(assignee);
-
-        Task updatedTask = taskRepository.save(task);
-        return mapToDto(updatedTask);
+        return mapToDto(taskRepository.save(task));
     }
 
     @Override
     public void delete(UUID id) {
         Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Task not found with id: " + id));
-
         taskRepository.delete(task);
     }
 
     private TaskDto mapToDto(Task task) {
-        return TaskDto.builder()
-                .id(task.getId())
-                .title(task.getTitle())
-                .description(task.getDescription())
-                .priority(task.getPriority())
-                .status(task.getStatus())
-                .dueDate(task.getDueDate())
-                .projectId(task.getProject().getId())
-                .projectName(task.getProject().getName())
-                .assigneeId(task.getAssignee().getId())
-                .assigneeName(task.getAssignee().getFirstName() + " " + task.getAssignee().getLastName())
-                .createdAt(task.getCreatedAt())
-                .build();
+        TaskDto dto = modelMapper.map(task, TaskDto.class);
+        dto.setProjectId(task.getProject().getId());
+        dto.setProjectName(task.getProject().getName());
+        dto.setAssigneeId(task.getAssignee().getId());
+        dto.setAssigneeName(task.getAssignee().getFirstName() + " " + task.getAssignee().getLastName());
+        return dto;
     }
 }
