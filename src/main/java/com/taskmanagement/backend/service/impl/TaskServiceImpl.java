@@ -1,4 +1,4 @@
-package com.taskmanagement.backend.service;
+package com.taskmanagement.backend.service.impl;
 
 import com.taskmanagement.backend.dto.CreateTaskRequest;
 import com.taskmanagement.backend.dto.TaskDto;
@@ -10,6 +10,7 @@ import com.taskmanagement.backend.exception.ResourceNotFoundException;
 import com.taskmanagement.backend.repository.ProjectRepository;
 import com.taskmanagement.backend.repository.TaskRepository;
 import com.taskmanagement.backend.repository.UserRepository;
+import com.taskmanagement.backend.service.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,12 +19,13 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class TaskService {
+public class TaskServiceImpl implements TaskService {
 
     private final TaskRepository taskRepository;
     private final ProjectRepository projectRepository;
     private final UserRepository userRepository;
 
+    @Override
     public List<TaskDto> getAll() {
         return taskRepository.findAll()
                 .stream()
@@ -31,6 +33,7 @@ public class TaskService {
                 .toList();
     }
 
+    @Override
     public TaskDto getById(UUID id) {
         Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Task not found with id: " + id));
@@ -38,6 +41,7 @@ public class TaskService {
         return mapToDto(task);
     }
 
+    @Override
     public TaskDto create(CreateTaskRequest request) {
         Project project = projectRepository.findById(request.getProjectId())
                 .orElseThrow(() -> new ResourceNotFoundException("Project not found with id: " + request.getProjectId()));
@@ -55,9 +59,11 @@ public class TaskService {
                 .assignee(assignee)
                 .build();
 
-        return mapToDto(taskRepository.save(task));
+        Task savedTask = taskRepository.save(task);
+        return mapToDto(savedTask);
     }
 
+    @Override
     public TaskDto update(UUID id, UpdateTaskRequest request) {
         Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Task not found with id: " + id));
@@ -76,9 +82,11 @@ public class TaskService {
         task.setProject(project);
         task.setAssignee(assignee);
 
-        return mapToDto(taskRepository.save(task));
+        Task updatedTask = taskRepository.save(task);
+        return mapToDto(updatedTask);
     }
 
+    @Override
     public void delete(UUID id) {
         Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Task not found with id: " + id));
