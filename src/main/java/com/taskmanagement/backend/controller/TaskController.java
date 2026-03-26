@@ -14,36 +14,36 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/v1/tasks")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:4200")
 public class TaskController {
 
+    public static final String BASE_URL = "/api/v1/tasks";
+    public static final String BASE_URL_WITH_ID = BASE_URL + "/{id}";
 
     private final TaskService taskService;
 
-    @GetMapping
+    @GetMapping(BASE_URL)
     public ResponseEntity<List<TaskDto>> getAllTasks() {
         return ResponseEntity.ok(taskService.getAll());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(BASE_URL_WITH_ID)
     public ResponseEntity<TaskDto> getTaskById(@PathVariable UUID id) {
         return ResponseEntity.ok(taskService.getById(id));
     }
 
-    @PostMapping
+    @PostMapping(BASE_URL)
     public ResponseEntity<TaskDto> createTask(@Valid @RequestBody CreateTaskRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(taskService.create(request));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping(BASE_URL_WITH_ID)
     public ResponseEntity<TaskDto> updateTask(@PathVariable UUID id,
                                               @Valid @RequestBody UpdateTaskRequest request) {
         return ResponseEntity.ok(taskService.update(id, request));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping(BASE_URL_WITH_ID)
     public ResponseEntity<Void> deleteTask(@PathVariable UUID id) {
         taskService.delete(id);
         return ResponseEntity.noContent().build();
