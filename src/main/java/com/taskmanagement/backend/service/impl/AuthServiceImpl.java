@@ -7,13 +7,14 @@ import com.taskmanagement.backend.entity.User;
 import com.taskmanagement.backend.exception.ResourceNotFoundException;
 import com.taskmanagement.backend.repository.UserRepository;
 import com.taskmanagement.backend.security.JwtService;
+import com.taskmanagement.backend.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class AuthService {
+public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
