@@ -26,12 +26,12 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                .headers(headers -> headers
-                        .frameOptions(frame -> frame.disable())
-                )
+//                .headers(headers -> headers
+//                        .frameOptions(frame -> frame.disable())
+//                )
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/v1/auth/**").permitAll()
-                        .requestMatchers("/h2-console/**").permitAll()
+//                        .requestMatchers("/h2-console/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session

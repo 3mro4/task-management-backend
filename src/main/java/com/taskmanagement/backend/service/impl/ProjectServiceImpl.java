@@ -39,6 +39,7 @@ public class ProjectServiceImpl implements ProjectService {
                 .toList();
     }
 
+    //fix currentMembers and tasksByPriority returned empty list and map, need to implement logic to fetch members and tasks for the project
     @Override
     public ProjectDetailsDto getById(UUID id) {
         Project project = projectRepository.findById(id)

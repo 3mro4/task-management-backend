@@ -12,6 +12,9 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    //add email already exists exception, and handle it here 409 conflict
+    // email or password is incorrect 401 unauthorized
+
     // 404 — Not Found
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<Object> handleNotFound(ResourceNotFoundException ex) {

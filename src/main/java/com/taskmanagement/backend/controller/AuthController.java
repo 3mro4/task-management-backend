@@ -6,11 +6,13 @@ import com.taskmanagement.backend.dto.auth.RegisterRequest;
 import com.taskmanagement.backend.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:4200")
 public class AuthController {
 
     private final AuthService authService;
@@ -20,7 +22,7 @@ public class AuthController {
 
     @PostMapping(REGISTER_URL)
     public ResponseEntity<AuthResponse> register(@Valid @RequestBody RegisterRequest request) {
-        return ResponseEntity.ok(authService.register(request));
+        return ResponseEntity.status(HttpStatus.CREATED).body(authService.register(request));
     }
 
     @PostMapping(LOGIN_URL)

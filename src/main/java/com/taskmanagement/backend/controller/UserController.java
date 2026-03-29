@@ -1,6 +1,7 @@
 package com.taskmanagement.backend.controller;
 
 import com.taskmanagement.backend.dto.auth.RegisterRequest;
+import com.taskmanagement.backend.dto.user.UpdateUserRequest;
 import com.taskmanagement.backend.dto.user.UserDto;
 import com.taskmanagement.backend.service.UserService;
 import jakarta.validation.Valid;
@@ -14,6 +15,7 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:4200")
 public class UserController {
 
     private final UserService userService;
@@ -38,7 +40,7 @@ public class UserController {
 
     @PutMapping(BASE_URL_WITH_ID)
     public ResponseEntity<UserDto> updateUser(@PathVariable UUID id,
-                                              @Valid @RequestBody RegisterRequest request) {
+                                              @Valid @RequestBody UpdateUserRequest request) {
         return ResponseEntity.ok(userService.updateUser(id, request));
     }
 

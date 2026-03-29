@@ -1,6 +1,7 @@
 package com.taskmanagement.backend.service.impl;
 
 import com.taskmanagement.backend.dto.auth.RegisterRequest;
+import com.taskmanagement.backend.dto.user.UpdateUserRequest;
 import com.taskmanagement.backend.dto.user.UserDto;
 import com.taskmanagement.backend.entity.User;
 import com.taskmanagement.backend.exception.ResourceNotFoundException;
@@ -53,7 +54,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto updateUser(UUID id, RegisterRequest request) {
+    public UserDto updateUser(UUID id, UpdateUserRequest request) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
         user.setFirstName(request.getFirstName());

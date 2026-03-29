@@ -15,6 +15,7 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:4200")
 public class ProjectController {
 
     private final ProjectService projectService;
