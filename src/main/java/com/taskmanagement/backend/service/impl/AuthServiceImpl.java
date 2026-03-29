@@ -11,7 +11,8 @@ import com.taskmanagement.backend.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
+import com.taskmanagement.backend.exception.EmailAlreadyExistsException;
+import com.taskmanagement.backend.exception.InvalidCredentialsException;
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
@@ -22,8 +23,7 @@ public class AuthServiceImpl implements AuthService {
 
     public AuthResponse register(RegisterRequest request) {
         if (userRepository.existsByEmail(request.getEmail())) {
-            throw new RuntimeException("Email already in use: " + request.getEmail());
-        }
+            throw new EmailAlreadyExistsException("Email already in use: " + request.getEmail());        }
 
         User user = User.builder()
                 .firstName(request.getFirstName())
@@ -46,8 +46,7 @@ public class AuthServiceImpl implements AuthService {
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + request.getEmail()));
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new RuntimeException("Invalid password");
-        }
+            throw new InvalidCredentialsException("Invalid email or password");        }
 
         String token = jwtService.generateToken(user);
         return AuthResponse.builder()

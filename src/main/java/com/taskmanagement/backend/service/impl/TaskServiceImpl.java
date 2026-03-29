@@ -64,17 +64,12 @@ public class TaskServiceImpl implements TaskService {
     public TaskDto update(UUID id, UpdateTaskRequest request) {
         Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Task not found with id: " + id));
-        Project project = projectRepository.findById(request.getProjectId())
-                .orElseThrow(() -> new ResourceNotFoundException("Project not found with id: " + request.getProjectId()));
-        User assignee = userRepository.findById(request.getAssigneeId())
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + request.getAssigneeId()));
-        task.setTitle(request.getTitle());
+
         task.setDescription(request.getDescription());
         task.setPriority(request.getPriority());
         task.setStatus(request.getStatus());
         task.setDueDate(request.getDueDate());
-        task.setProject(project);
-        task.setAssignee(assignee);
+
         return mapToDto(taskRepository.save(task));
     }
 

@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import com.taskmanagement.backend.exception.EmailAlreadyExistsException;
 
 import java.util.List;
 import java.util.UUID;
@@ -41,7 +42,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto createUser(RegisterRequest request) {
         if (userRepository.existsByEmail(request.getEmail())) {
-            throw new RuntimeException("Email already in use: " + request.getEmail());
+            throw new EmailAlreadyExistsException("Email already in use: " + request.getEmail());
         }
         User user = User.builder()
                 .firstName(request.getFirstName())
