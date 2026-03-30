@@ -1,4 +1,4 @@
-package com.taskmanagement.backend.dto;
+package com.taskmanagement.backend.dto.task;
 
 import com.taskmanagement.backend.entity.Priority;
 import com.taskmanagement.backend.entity.Status;

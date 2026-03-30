@@ -1,8 +1,8 @@
 package com.taskmanagement.backend.controller;
 
-import com.taskmanagement.backend.dto.CreateTaskRequest;
-import com.taskmanagement.backend.dto.TaskDto;
-import com.taskmanagement.backend.dto.UpdateTaskRequest;
+import com.taskmanagement.backend.dto.task.CreateTaskRequest;
+import com.taskmanagement.backend.dto.task.TaskDto;
+import com.taskmanagement.backend.dto.task.UpdateTaskRequest;
 import com.taskmanagement.backend.service.TaskService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

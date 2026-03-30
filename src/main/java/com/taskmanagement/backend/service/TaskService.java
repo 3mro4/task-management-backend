@@ -1,8 +1,8 @@
 package com.taskmanagement.backend.service;
 
-import com.taskmanagement.backend.dto.CreateTaskRequest;
-import com.taskmanagement.backend.dto.TaskDto;
-import com.taskmanagement.backend.dto.UpdateTaskRequest;
+import com.taskmanagement.backend.dto.task.CreateTaskRequest;
+import com.taskmanagement.backend.dto.task.TaskDto;
+import com.taskmanagement.backend.dto.task.UpdateTaskRequest;
 
 import java.util.List;
 import java.util.UUID;

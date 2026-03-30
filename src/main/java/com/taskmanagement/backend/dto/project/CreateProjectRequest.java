@@ -1,4 +1,4 @@
-package com.taskmanagement.backend.dto;
+package com.taskmanagement.backend.dto.project;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;

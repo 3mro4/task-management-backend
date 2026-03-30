@@ -1,8 +1,8 @@
 package com.taskmanagement.backend.service.impl;
 
-import com.taskmanagement.backend.dto.CreateTaskRequest;
-import com.taskmanagement.backend.dto.TaskDto;
-import com.taskmanagement.backend.dto.UpdateTaskRequest;
+import com.taskmanagement.backend.dto.task.CreateTaskRequest;
+import com.taskmanagement.backend.dto.task.TaskDto;
+import com.taskmanagement.backend.dto.task.UpdateTaskRequest;
 import com.taskmanagement.backend.entity.Project;
 import com.taskmanagement.backend.entity.Task;
 import com.taskmanagement.backend.entity.User;

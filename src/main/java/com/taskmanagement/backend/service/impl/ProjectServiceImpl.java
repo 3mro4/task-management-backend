@@ -1,8 +1,8 @@
 package com.taskmanagement.backend.service.impl;
 
-import com.taskmanagement.backend.dto.CreateProjectRequest;
-import com.taskmanagement.backend.dto.ProjectDetailsDto;
-import com.taskmanagement.backend.dto.ProjectDto;
+import com.taskmanagement.backend.dto.project.CreateProjectRequest;
+import com.taskmanagement.backend.dto.project.ProjectDetailsDto;
+import com.taskmanagement.backend.dto.project.ProjectDto;
 import com.taskmanagement.backend.entity.Project;
 import com.taskmanagement.backend.entity.Task;
 import com.taskmanagement.backend.exception.ResourceNotFoundException;
