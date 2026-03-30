@@ -1,7 +1,7 @@
 package com.taskmanagement.backend.dto.task;
 
-import com.taskmanagement.backend.entity.Priority;
-import com.taskmanagement.backend.entity.Status;
+import com.taskmanagement.backend.enums.Priority;
+import com.taskmanagement.backend.enums.Status;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;

@@ -1,7 +1,7 @@
 package com.taskmanagement.backend.service.impl;
 
-import com.taskmanagement.backend.entity.Priority;
-import com.taskmanagement.backend.entity.Status;
+import com.taskmanagement.backend.enums.Priority;
+import com.taskmanagement.backend.enums.Status;
 import com.taskmanagement.backend.repository.TaskRepository;
 import com.taskmanagement.backend.repository.UserRepository;
 import com.taskmanagement.backend.repository.ProjectRepository;

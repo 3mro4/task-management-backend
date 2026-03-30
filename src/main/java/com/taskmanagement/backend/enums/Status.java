@@ -1,4 +1,4 @@
-package com.taskmanagement.backend.entity;
+package com.taskmanagement.backend.enums;
 
 public enum Status {
     TODO,

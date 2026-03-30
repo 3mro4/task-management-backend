@@ -1,5 +1,7 @@
 package com.taskmanagement.backend.entity;
 
+import com.taskmanagement.backend.enums.Priority;
+import com.taskmanagement.backend.enums.Status;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
