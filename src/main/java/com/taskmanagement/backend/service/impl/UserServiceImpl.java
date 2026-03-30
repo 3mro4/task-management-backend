@@ -40,6 +40,7 @@ public class UserServiceImpl implements UserService {
     }
 
     //it can be same as register method in AuthServiceImpl.
+    //util class for validate
     @Override
     public UserDto createUser(RegisterRequest request) {
         if (userRepository.existsByEmail(request.getEmail())) {

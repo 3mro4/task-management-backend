@@ -25,7 +25,7 @@ public class ProjectServiceImpl implements ProjectService {
     private final ProjectRepository projectRepository;
     private final TaskRepository taskRepository;
     private final ModelMapper modelMapper;
-
+//validate name of project is not duplicate
     @Override
     public ProjectDto create(CreateProjectRequest request) {
         Project project = Project.builder()

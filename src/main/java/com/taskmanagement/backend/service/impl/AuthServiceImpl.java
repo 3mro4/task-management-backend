@@ -4,7 +4,6 @@ import com.taskmanagement.backend.dto.auth.AuthResponse;
 import com.taskmanagement.backend.dto.auth.LoginRequest;
 import com.taskmanagement.backend.dto.auth.RegisterRequest;
 import com.taskmanagement.backend.entity.User;
-import com.taskmanagement.backend.exception.ResourceNotFoundException;
 import com.taskmanagement.backend.repository.UserRepository;
 import com.taskmanagement.backend.security.JwtService;
 import com.taskmanagement.backend.service.AuthService;

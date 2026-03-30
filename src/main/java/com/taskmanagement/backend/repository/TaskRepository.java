@@ -14,3 +14,4 @@ public interface TaskRepository extends JpaRepository<Task, UUID> {
     long countByStatus(Status status);
     long countByPriority(Priority priority);
 }
+//custom query for dashboard to fetch all

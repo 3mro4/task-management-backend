@@ -12,6 +12,7 @@ import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+//dto for mapping and anotation respnse
 
     // 404 — Resource not found
     @ExceptionHandler(ResourceNotFoundException.class)

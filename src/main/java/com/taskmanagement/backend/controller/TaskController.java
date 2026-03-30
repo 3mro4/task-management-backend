@@ -18,6 +18,8 @@ import java.util.UUID;
 @CrossOrigin(origins = "http://localhost:4200")
 public class TaskController {
 
+//use @ResponseStatus(HttpStatus.CREATED), user cross origin config
+//add pagination to all
     public static final String BASE_URL = "/api/v1/tasks";
     public static final String BASE_URL_WITH_ID = BASE_URL + "/{id}";
 
@@ -32,10 +34,10 @@ public class TaskController {
     public ResponseEntity<TaskDto> getTaskById(@PathVariable UUID id) {
         return ResponseEntity.ok(taskService.getById(id));
     }
-
     @PostMapping(BASE_URL)
-    public ResponseEntity<TaskDto> createTask(@Valid @RequestBody CreateTaskRequest request) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(taskService.create(request));
+    @ResponseStatus(HttpStatus.CREATED)
+    public TaskDto createTask(@Valid @RequestBody CreateTaskRequest request) {
+        return taskService.create(request);
     }
 
     @PutMapping(BASE_URL_WITH_ID)
