@@ -15,7 +15,6 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:4200")
 public class TaskController {
 
 //use @ResponseStatus(HttpStatus.CREATED), user cross origin config
