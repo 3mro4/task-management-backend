@@ -19,7 +19,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @RequiredArgsConstructor
 //creat two file of security config for prod and dev using @Profile annotation to avoid h2 console access issue in prod
-@Profile("prod")
+//@Profile("prod")
 public class SecurityConfig {
 
     private final JwtAuthFilter jwtAuthFilter;

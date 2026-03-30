@@ -1,5 +1,6 @@
 package com.taskmanagement.backend.service.impl;
 
+import com.taskmanagement.backend.dto.PageResponse;
 import com.taskmanagement.backend.dto.task.CreateTaskRequest;
 import com.taskmanagement.backend.dto.task.TaskDto;
 import com.taskmanagement.backend.dto.task.UpdateTaskRequest;
@@ -13,6 +14,8 @@ import com.taskmanagement.backend.repository.UserRepository;
 import com.taskmanagement.backend.service.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,11 +31,16 @@ public class TaskServiceImpl implements TaskService {
     private final ModelMapper modelMapper;
 
     @Override
-    public List<TaskDto> getAll() {
-        return taskRepository.findAll()
-                .stream()
-                .map(this::mapToDto)
-                .toList();
+    public PageResponse<TaskDto> getAll(Pageable pageable) {
+        Page<Task> page = taskRepository.findAll(pageable);
+        return PageResponse.<TaskDto>builder()
+                .content(page.map(this::mapToDto).toList())
+                .currentPage(page.getNumber())
+                .pageSize(page.getSize())
+                .totalElements(page.getTotalElements())
+                .totalPages(page.getTotalPages())
+                .lastPage(page.isLast())
+                .build();
     }
 
     @Override

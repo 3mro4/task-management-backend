@@ -1,5 +1,6 @@
 package com.taskmanagement.backend.service.impl;
 
+import com.taskmanagement.backend.dto.PageResponse;
 import com.taskmanagement.backend.dto.project.CreateProjectRequest;
 import com.taskmanagement.backend.dto.project.ProjectDetailsDto;
 import com.taskmanagement.backend.dto.project.ProjectDto;
@@ -11,6 +12,8 @@ import com.taskmanagement.backend.repository.TaskRepository;
 import com.taskmanagement.backend.service.ProjectService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,7 +28,11 @@ public class ProjectServiceImpl implements ProjectService {
     private final ProjectRepository projectRepository;
     private final TaskRepository taskRepository;
     private final ModelMapper modelMapper;
-//validate name of project is not duplicate
+
+//validate name of project is not duplicate -- IN PROGRESS
+// util class for validate if needed to be professional -- IN PROGRESS
+
+
     @Override
     public ProjectDto create(CreateProjectRequest request) {
         Project project = Project.builder()
@@ -37,11 +44,16 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public List<ProjectDto> getAll() {
-        return projectRepository.findAll()
-                .stream()
-                .map(project -> modelMapper.map(project, ProjectDto.class))
-                .toList();
+    public PageResponse<ProjectDto> getAll(Pageable pageable) {
+        Page<Project> page = projectRepository.findAll(pageable);
+        return PageResponse.<ProjectDto>builder()
+                .content(page.map(project -> modelMapper.map(project, ProjectDto.class)).toList())
+                .currentPage(page.getNumber())
+                .pageSize(page.getSize())
+                .totalElements(page.getTotalElements())
+                .totalPages(page.getTotalPages())
+                .lastPage(page.isLast())
+                .build();
     }
 
     @Override

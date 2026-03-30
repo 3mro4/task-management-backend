@@ -1,5 +1,6 @@
 package com.taskmanagement.backend.service.impl;
 
+import com.taskmanagement.backend.dto.PageResponse;
 import com.taskmanagement.backend.dto.auth.RegisterRequest;
 import com.taskmanagement.backend.dto.user.UpdateUserRequest;
 import com.taskmanagement.backend.dto.user.UserDto;
@@ -9,6 +10,8 @@ import com.taskmanagement.backend.repository.UserRepository;
 import com.taskmanagement.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.taskmanagement.backend.exception.EmailAlreadyExistsException;
@@ -25,11 +28,16 @@ public class UserServiceImpl implements UserService {
     private final ModelMapper modelMapper;
 
     @Override
-    public List<UserDto> getAllUsers() {
-        return userRepository.findAll()
-                .stream()
-                .map(user -> modelMapper.map(user, UserDto.class))
-                .toList();
+    public PageResponse<UserDto> getAllUsers(Pageable pageable) {
+        Page<User> page = userRepository.findAll(pageable);
+        return PageResponse.<UserDto>builder()
+                .content(page.map(user -> modelMapper.map(user, UserDto.class)).toList())
+                .currentPage(page.getNumber())
+                .pageSize(page.getSize())
+                .totalElements(page.getTotalElements())
+                .totalPages(page.getTotalPages())
+                .lastPage(page.isLast())
+                .build();
     }
 
     @Override
@@ -40,7 +48,6 @@ public class UserServiceImpl implements UserService {
     }
 
     //it can be same as register method in AuthServiceImpl.
-    //util class for validate
     @Override
     public UserDto createUser(RegisterRequest request) {
         if (userRepository.existsByEmail(request.getEmail())) {
