@@ -13,9 +13,10 @@ import com.taskmanagement.backend.repository.UserRepository;
 import com.taskmanagement.backend.service.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -28,11 +29,9 @@ public class TaskServiceImpl implements TaskService {
     private final ModelMapper modelMapper;
 
     @Override
-    public List<TaskDto> getAll() {
-        return taskRepository.findAll()
-                .stream()
-                .map(this::mapToDto)
-                .toList();
+    public Page<TaskDto> getAll(int page, int size) {
+        return taskRepository.findAll(PageRequest.of(page, size))
+                .map(this::mapToDto);
     }
 
     @Override
@@ -46,8 +45,10 @@ public class TaskServiceImpl implements TaskService {
     public TaskDto create(CreateTaskRequest request) {
         Project project = projectRepository.findById(request.getProjectId())
                 .orElseThrow(() -> new ResourceNotFoundException("Project not found with id: " + request.getProjectId()));
+
         User assignee = userRepository.findById(request.getAssigneeId())
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + request.getAssigneeId()));
+
         Task task = Task.builder()
                 .title(request.getTitle())
                 .description(request.getDescription())
@@ -57,6 +58,7 @@ public class TaskServiceImpl implements TaskService {
                 .project(project)
                 .assignee(assignee)
                 .build();
+
         return mapToDto(taskRepository.save(task));
     }
 
@@ -65,10 +67,14 @@ public class TaskServiceImpl implements TaskService {
         Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Task not found with id: " + id));
 
+        User assignee = userRepository.findById(request.getAssigneeId())
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + request.getAssigneeId()));
+
         task.setDescription(request.getDescription());
         task.setPriority(request.getPriority());
         task.setStatus(request.getStatus());
         task.setDueDate(request.getDueDate());
+        task.setAssignee(assignee);
 
         return mapToDto(taskRepository.save(task));
     }
@@ -77,6 +83,7 @@ public class TaskServiceImpl implements TaskService {
     public void delete(UUID id) {
         Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Task not found with id: " + id));
+
         taskRepository.delete(task);
     }
 

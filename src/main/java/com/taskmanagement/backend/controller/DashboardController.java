@@ -18,7 +18,7 @@ public class DashboardController {
     public static final String BASE_URL_WITH_ID = BASE_URL + "/{id}";
 
     @GetMapping(BASE_URL)
-    public ResponseEntity<Map<String, Object>> getSummary() {
-        return ResponseEntity.ok(dashboardService.getSummary());
+    public Map<String, Object>getSummary() {
+        return dashboardService.getSummary();
     }
 }

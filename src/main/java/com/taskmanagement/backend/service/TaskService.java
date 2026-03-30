@@ -3,13 +3,15 @@ package com.taskmanagement.backend.service;
 import com.taskmanagement.backend.dto.task.CreateTaskRequest;
 import com.taskmanagement.backend.dto.task.TaskDto;
 import com.taskmanagement.backend.dto.task.UpdateTaskRequest;
+import org.springframework.data.domain.Page;
+
 
 import java.util.List;
 import java.util.UUID;
 
 public interface TaskService {
 
-    List<TaskDto> getAll();
+    Page<TaskDto> getAll(int page, int size);
 
     TaskDto getById(UUID id);
 
