@@ -7,6 +7,7 @@ import com.taskmanagement.backend.dto.task.UpdateTaskRequest;
 import com.taskmanagement.backend.entity.Project;
 import com.taskmanagement.backend.entity.Task;
 import com.taskmanagement.backend.entity.User;
+import com.taskmanagement.backend.enums.Status;
 import com.taskmanagement.backend.exception.ResourceNotFoundException;
 import com.taskmanagement.backend.repository.ProjectRepository;
 import com.taskmanagement.backend.repository.TaskRepository;
@@ -60,7 +61,7 @@ public class TaskServiceImpl implements TaskService {
                 .title(request.getTitle())
                 .description(request.getDescription())
                 .priority(request.getPriority())
-                .status(request.getStatus())
+                .status(Status.TODO)
                 .dueDate(request.getDueDate())
                 .project(project)
                 .assignee(assignee)
@@ -73,10 +74,14 @@ public class TaskServiceImpl implements TaskService {
         Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Task not found with id: " + id));
 
+        User assignee = userRepository.findById(request.getAssigneeId())
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + request.getAssigneeId()));
+
         task.setDescription(request.getDescription());
         task.setPriority(request.getPriority());
         task.setStatus(request.getStatus());
         task.setDueDate(request.getDueDate());
+        task.setAssignee(assignee);
 
         return mapToDto(taskRepository.save(task));
     }

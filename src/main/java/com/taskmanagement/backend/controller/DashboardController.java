@@ -1,11 +1,9 @@
 package com.taskmanagement.backend.controller;
 
+import com.taskmanagement.backend.dto.dashboard.DashboardSummaryDto;
 import com.taskmanagement.backend.service.DashboardService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -17,7 +15,7 @@ public class DashboardController {
     public static final String BASE_URL_WITH_ID = BASE_URL + "/{id}";
 
     @GetMapping(BASE_URL)
-    public ResponseEntity<Map<String, Object>> getSummary() {
-        return ResponseEntity.ok(dashboardService.getSummary());
+    public DashboardSummaryDto getSummary() {
+        return dashboardService.getSummary();
     }
 }
