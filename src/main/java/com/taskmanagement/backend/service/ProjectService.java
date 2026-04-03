@@ -15,4 +15,5 @@ public interface ProjectService {
     PageResponse<ProjectDto> getAll(Pageable pageable);
 
     ProjectDetailsDto getById(UUID id);
+    void deleteById(UUID id);
 }

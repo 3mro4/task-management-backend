@@ -44,4 +44,13 @@ public class ProjectController {
     public ProjectDetailsDto getProjectById(@PathVariable UUID id) {
         return projectService.getById(id);
     }
+
+
+    // Delete project by id -------------------------------------------------------------------
+    @DeleteMapping(BASE_URL_WITH_ID)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteProjectById(@PathVariable UUID id) {
+        projectService.deleteById(id);
+
+    }
 }

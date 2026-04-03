@@ -35,6 +35,9 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public ProjectDto create(CreateProjectRequest request) {
+        if (projectRepository.existsByName(request.getName())) {
+            throw new ResourceNotFoundException("Project name already exists: " + request.getName());
+        }
         Project project = Project.builder()
                 .name(request.getName())
                 .description(request.getDescription())
@@ -82,5 +85,12 @@ public class ProjectServiceImpl implements ProjectService {
                 .currentMembers(currentMembers)
                 .tasksByPriority(tasksByPriority)
                 .build();
+    }
+
+    public void deleteById(UUID id) {
+        if (!projectRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Project not found with id: " + id);
+        }
+        projectRepository.deleteById(id);
     }
 }
