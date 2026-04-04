@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 public class AuthResponse {
 
     private String token;
+    private String userId;
     private String email;        // useful for frontend to know who logged in
     private String firstName;    // useful for displaying welcome message
 }

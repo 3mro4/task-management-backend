@@ -79,4 +79,15 @@ public class GlobalExceptionHandler {
                         .build()
         );
     }
+
+    @ExceptionHandler(CannotDeleteException.class)
+    public ResponseEntity<ErrorResponse> handleCannotDeleteException(CannotDeleteException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(
+                ErrorResponse.builder()
+                        .status(409)
+                        .error("Conflict")
+                        .message(ex.getMessage())
+                        .build()
+        );
+    }
 }

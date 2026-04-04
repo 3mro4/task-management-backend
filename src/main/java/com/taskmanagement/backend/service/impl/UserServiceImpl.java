@@ -5,6 +5,7 @@ import com.taskmanagement.backend.dto.auth.RegisterRequest;
 import com.taskmanagement.backend.dto.user.UpdateUserRequest;
 import com.taskmanagement.backend.dto.user.UserDto;
 import com.taskmanagement.backend.entity.User;
+import com.taskmanagement.backend.exception.CannotDeleteException;
 import com.taskmanagement.backend.exception.ResourceNotFoundException;
 import com.taskmanagement.backend.repository.UserRepository;
 import com.taskmanagement.backend.service.UserService;
@@ -67,10 +68,14 @@ public class UserServiceImpl implements UserService {
     public UserDto updateUser(UUID id, UpdateUserRequest request) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
+
         user.setFirstName(request.getFirstName());
         user.setMiddleName(request.getMiddleName());
         user.setLastName(request.getLastName());
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        if (request.getPassword() != null && !request.getPassword().isBlank()) {
+            user.setPassword(passwordEncoder.encode(request.getPassword()));
+        }
+
         return modelMapper.map(userRepository.save(user), UserDto.class);
     }
 
@@ -78,6 +83,10 @@ public class UserServiceImpl implements UserService {
     public void deleteUser(UUID id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
-        userRepository.delete(user);
+        try {
+            userRepository.delete(user);
+        } catch (Exception e) {
+            throw new CannotDeleteException("Cannot delete user with assigned tasks. Please reassign tasks first.");
+        }
     }
 }

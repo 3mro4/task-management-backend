@@ -23,20 +23,20 @@ public class JwtService {
 
     public String generateToken(User user) {
         return Jwts.builder()
-                .subject(user.getEmail())
+                .subject(user.getId().toString())
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + jwtExpiration))
                 .signWith(getSigningKey())
                 .compact();
     }
 
-    public String extractEmail(String token) {
+    public String extractId(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
     public boolean isTokenValid(String token, User user) {
-        final String email = extractEmail(token);
-        return email.equals(user.getEmail()) && !isTokenExpired(token);
+        final String id = extractId(token);
+        return id.equals(user.getId().toString()) && !isTokenExpired(token);
     }
 
     private boolean isTokenExpired(String token) {

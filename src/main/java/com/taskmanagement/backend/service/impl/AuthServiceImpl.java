@@ -37,6 +37,7 @@ public class AuthServiceImpl implements AuthService {
         String token = jwtService.generateToken(user);
         return AuthResponse.builder()
                 .token(token)
+                .userId(user.getId().toString())
                 .email(user.getEmail())
                 .firstName(user.getFirstName())
                 .build();
@@ -52,6 +53,7 @@ public class AuthServiceImpl implements AuthService {
         String token = jwtService.generateToken(user);
         return AuthResponse.builder()
                 .token(token)
+                .userId(user.getId().toString())
                 .email(user.getEmail())
                 .firstName(user.getFirstName())
                 .build();

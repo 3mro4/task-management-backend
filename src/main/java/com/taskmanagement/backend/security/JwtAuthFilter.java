@@ -16,6 +16,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
@@ -23,8 +24,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
     private final UserRepository userRepository;
-//    private final UserDetailsServiceImpl userDetailsService;
-//    UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -40,10 +40,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         }
 
         final String jwt = authHeader.substring(7);
-        final String email = jwtService.extractEmail(jwt);
+        final String id = jwtService.extractId(jwt);
 
-        if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            User user = userRepository.findByEmail(email).orElse(null);
+        if (id != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            User user = userRepository.findById(UUID.fromString(id)).orElse(null);
 
             if (user != null && jwtService.isTokenValid(jwt, user)) {
                 UsernamePasswordAuthenticationToken authToken =
